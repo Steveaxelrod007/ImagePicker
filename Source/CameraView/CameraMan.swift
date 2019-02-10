@@ -158,7 +158,7 @@ class CameraMan {
       self.stillImageOutput?.captureStillImageAsynchronously(from: connection) { buffer, error in
         guard let buffer = buffer, error == nil && CMSampleBufferIsValid(buffer),
           let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer),
-          let image = UIImage(data: imageData)
+          let _ = UIImage(data: imageData)
           else {
             DispatchQueue.main.async {
               completion?()
@@ -166,7 +166,10 @@ class CameraMan {
             return
         }
 
-        self.savePhoto(image, location: location, completion: completion)
+        DispatchQueue.main.async {
+          completion?()
+        }
+//        self.savePhoto(image, location: location, completion: completion)
       }
     }
   }
